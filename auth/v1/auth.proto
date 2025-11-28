@@ -8,6 +8,7 @@ service AuthService {
   rpc OIDCParams(OIDCParamsRequest) returns (OIDCParamsResponse);
   rpc OIDCLogin(OIDCLoginRequest) returns (OIDCLoginResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc ValidateSession(ValidateSessionRequest) returns (ValidateSessionResponse);
 }
 
 // OIDCProvider represents an external OpenID Connect identity provider.
@@ -43,4 +44,12 @@ message LogoutRequest {}
 
 message LogoutResponse {
   bool success = 1;
+}
+
+message ValidateSessionRequest {
+  string session_token = 1;
+}
+
+message ValidateSessionResponse {
+  string user_id = 1;
 }
