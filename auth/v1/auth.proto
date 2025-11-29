@@ -40,7 +40,9 @@ message OIDCLoginResponse {
   string session_token = 1;
 }
 
-message LogoutRequest {}
+message LogoutRequest {
+  string session_token = 1;
+}
 
 message LogoutResponse {
   bool success = 1;
