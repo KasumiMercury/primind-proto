@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "gen/task/v1;taskv1";
+
+service TaskService {
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+}
+
+enum TaskType {
+    TASK_TYPE_UNSPECIFIED = 0;
+    TASK_TYPE_URGENT = 1;
+    TASK_TYPE_NORMAL = 2;
+    TASK_TYPE_LOW = 3;
+    TASK_TYPE_HAS_DUE_TIME = 4;
+}
+
+enum TaskStatus {
+    TASK_STATUS_UNSPECIFIED = 0;
+    TASK_STATUS_ACTIVE = 1;
+    TASK_STATUS_COMPLETED = 2;
+}
+
+message CreateTaskRequest {
+  string title = 1;
+  TaskType task_type = 2;
+  optional string description = 3;
+  optional int64 due_time = 4;
+}
+
+message CreateTaskResponse {
+  string task_id = 1;
+}
+
+message GetTaskRequest {
+  string task_id = 1;
+}
+
+message GetTaskResponse {
+  string task_id = 1;
+  string title = 2;
+  TaskType task_type = 3;
+  TaskStatus task_status = 4;
+  optional string description = 5;
+  optional int64 due_time = 6;
+  int64 created_at = 7;
+}
