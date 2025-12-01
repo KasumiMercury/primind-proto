@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package task.v1;
 
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
 option go_package = "gen/task/v1;taskv1";
 
 service TaskService {
@@ -10,40 +13,63 @@ service TaskService {
 }
 
 enum TaskType {
-    TASK_TYPE_UNSPECIFIED = 0;
-    TASK_TYPE_URGENT = 1;
-    TASK_TYPE_NORMAL = 2;
-    TASK_TYPE_LOW = 3;
-    TASK_TYPE_HAS_DUE_TIME = 4;
+  TASK_TYPE_UNSPECIFIED = 0;
+  TASK_TYPE_URGENT = 1;
+  TASK_TYPE_NORMAL = 2;
+  TASK_TYPE_LOW = 3;
+  TASK_TYPE_HAS_DUE_TIME = 4;
 }
 
 enum TaskStatus {
-    TASK_STATUS_UNSPECIFIED = 0;
-    TASK_STATUS_ACTIVE = 1;
-    TASK_STATUS_COMPLETED = 2;
+  TASK_STATUS_UNSPECIFIED = 0;
+  TASK_STATUS_ACTIVE = 1;
+  TASK_STATUS_COMPLETED = 2;
+}
+
+message Task {
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
+  TaskType task_type = 2 [(buf.validate.field).enum = {
+    in: [
+      1,
+      2,
+      3,
+      4
+    ]
+  }];
+  TaskStatus task_status = 3 [(buf.validate.field).enum = {
+    in: [
+      1,
+      2
+    ]
+  }];
+  string title = 4;
+  string description = 5;
+  optional google.protobuf.Timestamp due_time = 6;
+  google.protobuf.Timestamp created_at = 7;
 }
 
 message CreateTaskRequest {
-  string title = 1;
-  TaskType task_type = 2;
-  optional string description = 3;
-  optional int64 due_time = 4;
+  TaskType task_type = 1 [(buf.validate.field).enum = {
+    in: [
+      1,
+      2,
+      3,
+      4
+    ]
+  }];
+  string title = 2;
+  string description = 3;
+  optional google.protobuf.Timestamp due_time = 4;
 }
 
 message CreateTaskResponse {
-  string task_id = 1;
+  Task task = 1;
 }
 
 message GetTaskRequest {
-  string task_id = 1;
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
 }
 
 message GetTaskResponse {
-  string task_id = 1;
-  string title = 2;
-  TaskType task_type = 3;
-  TaskStatus task_status = 4;
-  optional string description = 5;
-  optional int64 due_time = 6;
-  int64 created_at = 7;
+  Task task = 1;
 }
