@@ -17,7 +17,7 @@ enum TaskType {
   TASK_TYPE_URGENT = 1;
   TASK_TYPE_NORMAL = 2;
   TASK_TYPE_LOW = 3;
-  TASK_TYPE_HAS_DUE_TIME = 4;
+  TASK_TYPE_SCHEDULED = 4;
 }
 
 enum TaskStatus {
@@ -44,7 +44,7 @@ message Task {
   }];
   string title = 4;
   string description = 5;
-  optional google.protobuf.Timestamp due_time = 6;
+  optional google.protobuf.Timestamp scheduled_at = 6;
   google.protobuf.Timestamp created_at = 7;
 }
 
@@ -60,7 +60,7 @@ message CreateTaskRequest {
   }];
   string title = 3;
   string description = 4;
-  optional google.protobuf.Timestamp due_time = 5;
+  optional google.protobuf.Timestamp scheduled_at = 5;
 }
 
 message CreateTaskResponse {
