@@ -10,6 +10,7 @@ option go_package = "gen/task/v1;taskv1";
 service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+  rpc ListActiveTasks(ListActiveTasksRequest) returns (ListActiveTasksResponse);
 }
 
 enum TaskType {
@@ -24,6 +25,11 @@ enum TaskStatus {
   TASK_STATUS_UNSPECIFIED = 0;
   TASK_STATUS_ACTIVE = 1;
   TASK_STATUS_COMPLETED = 2;
+}
+
+enum TaskSortType {
+  TASK_SORT_TYPE_UNSPECIFIED = 0;
+  TASK_SORT_TYPE_TARGET_AT = 1;
 }
 
 message Task {
@@ -73,4 +79,12 @@ message GetTaskRequest {
 
 message GetTaskResponse {
   Task task = 1;
+}
+
+message ListActiveTasksRequest {
+  TaskSortType sort_type = 1;
+}
+
+message ListActiveTasksResponse {
+  repeated Task tasks = 1;
 }
