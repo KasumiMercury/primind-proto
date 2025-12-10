@@ -53,6 +53,7 @@ message Task {
   optional google.protobuf.Timestamp scheduled_at = 6;
   google.protobuf.Timestamp created_at = 7;
   google.protobuf.Timestamp target_at = 8;
+  string color = 9;
 }
 
 message CreateTaskRequest {
@@ -68,6 +69,7 @@ message CreateTaskRequest {
   string title = 3;
   string description = 4;
   optional google.protobuf.Timestamp scheduled_at = 5;
+  string color = 6;
 }
 
 message CreateTaskResponse {
