@@ -13,6 +13,7 @@ service TaskService {
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
   rpc ListActiveTasks(ListActiveTasksRequest) returns (ListActiveTasksResponse);
   rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
 }
 
 enum TaskType {
@@ -107,3 +108,9 @@ message UpdateTaskRequest {
 message UpdateTaskResponse {
   Task task = 1;
 }
+
+message DeleteTaskRequest {
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
+}
+
+message DeleteTaskResponse {}
