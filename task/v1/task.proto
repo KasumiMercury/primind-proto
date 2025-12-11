@@ -3,6 +3,7 @@ syntax = "proto3";
 package task.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "gen/task/v1;taskv1";
@@ -11,6 +12,7 @@ service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
   rpc ListActiveTasks(ListActiveTasksRequest) returns (ListActiveTasksResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
 }
 
 enum TaskType {
@@ -90,4 +92,18 @@ message ListActiveTasksRequest {
 
 message ListActiveTasksResponse {
   repeated Task tasks = 1;
+}
+
+message UpdateTaskRequest {
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
+  TaskStatus task_status = 2;
+  string title = 3;
+  string description = 4;
+  optional google.protobuf.Timestamp scheduled_at = 5;
+  string color = 6;
+  google.protobuf.FieldMask update_mask = 7 [(buf.validate.field).required = true];
+}
+
+message UpdateTaskResponse {
+  Task task = 1;
 }
