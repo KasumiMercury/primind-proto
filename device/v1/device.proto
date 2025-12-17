@@ -8,6 +8,7 @@ option go_package = "gen/device/v1;devicev1";
 
 service DeviceService {
   rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+  rpc GetUserDevices(GetUserDevicesRequest) returns (GetUserDevicesResponse);
 }
 
 enum Platform {
@@ -36,4 +37,15 @@ message RegisterDeviceRequest {
 message RegisterDeviceResponse {
   string device_id = 1 [(buf.validate.field).string.uuid = true];
   bool is_new = 2;
+}
+
+message GetUserDevicesRequest {}
+
+message DeviceInfo {
+  string device_id = 1 [(buf.validate.field).string.uuid = true];
+  optional string fcm_token = 2;
+}
+
+message GetUserDevicesResponse {
+  repeated DeviceInfo devices = 1;
 }
