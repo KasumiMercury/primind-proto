@@ -18,9 +18,9 @@ service TaskService {
 
 enum TaskType {
   TASK_TYPE_UNSPECIFIED = 0;
-  TASK_TYPE_URGENT = 1;
-  TASK_TYPE_NORMAL = 2;
-  TASK_TYPE_LOW = 3;
+  TASK_TYPE_SHORT = 1;
+  TASK_TYPE_NEAR = 2;
+  TASK_TYPE_RELAXED = 3;
   TASK_TYPE_SCHEDULED = 4;
 }
 
