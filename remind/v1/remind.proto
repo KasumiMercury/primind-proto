@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package remind.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "common/v1/common.proto";
+
+option go_package = "gen/remind/v1;remindv1";
+
+// Device represents a user device with FCM token
+message Device {
+  string device_id = 1 [(buf.validate.field).string.uuid = true];
+  string fcm_token = 2 [(buf.validate.field).string.min_len = 1];
+}
+
+// CreateRemindRequest is sent from central-backend via primind-tasks to time-mgmt
+message CreateRemindRequest {
+  repeated google.protobuf.Timestamp times = 1 [(buf.validate.field).repeated.min_items = 1];
+  string user_id = 2 [(buf.validate.field).string.uuid = true];
+  repeated Device devices = 3 [(buf.validate.field).repeated.min_items = 1];
+  string task_id = 4 [(buf.validate.field).string.uuid = true];
+  common.v1.TaskType task_type = 5 [(buf.validate.field).enum = {in: [1, 2, 3, 4]}];
+}
+
+// CancelRemindRequest is sent from central-backend via primind-tasks to time-mgmt
+message CancelRemindRequest {
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
+  string user_id = 2 [(buf.validate.field).string.uuid = true];
+}
+
+// Remind represents a single reminder entry
+message Remind {
+  string id = 1;
+  google.protobuf.Timestamp time = 2;
+  string user_id = 3;
+  repeated Device devices = 4;
+  string task_id = 5;
+  common.v1.TaskType task_type = 6;
+  bool throttled = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+// RemindsResponse is the response containing a list of reminds
+message RemindsResponse {
+  repeated Remind reminds = 1;
+  int32 count = 2;
+}
+
+// RemindResponse is the response containing a single remind
+message RemindResponse {
+  Remind remind = 1;
+}
+
+// UpdateThrottledRequest is sent from throttling service to time-mgmt
+message UpdateThrottledRequest {
+  bool throttled = 1;
+}
+
+// ErrorResponse is the standard error response for remind service
+message ErrorResponse {
+  string error = 1;
+  string message = 2;
+  string field = 3;
+}
