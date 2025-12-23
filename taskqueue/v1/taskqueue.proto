@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package taskqueue.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/taskqueue/v1;taskqueuev1";
+
+// HTTPRequest contains the request data to forward to target service
+message HTTPRequest {
+  // Base64-encoded body payload
+  string body = 1;
+  map<string, string> headers = 2;
+}
+
+// Task represents a task to be queued
+message Task {
+  string name = 1;
+  HTTPRequest http_request = 2 [(buf.validate.field).required = true];
+  // RFC3339 formatted schedule time (optional, for delayed execution)
+  string schedule_time = 3;
+  string create_time = 4;
+}
+
+// CreateTaskRequest is sent from central-backend or throttling to primind-tasks
+message CreateTaskRequest {
+  Task task = 1 [(buf.validate.field).required = true];
+}
+
+// CreateTaskResponse is the response from primind-tasks API
+message CreateTaskResponse {
+  string name = 1;
+  string schedule_time = 2;
+  string create_time = 3;
+}
+
+// TaskPayload is the internal payload structure stored in the queue
+message TaskPayload {
+  bytes body = 1;
+  map<string, string> headers = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
+
+// ErrorResponse is the standard error response for taskqueue service
+message ErrorResponse {
+  int32 code = 1;
+  string status = 2;
+  string message = 3;
+}
