@@ -3,4 +3,6 @@
 !*.proto
 !.gitignore
 !mise.toml
+!buf.yaml
+!buf.lock
 
