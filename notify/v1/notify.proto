@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package notify.v1;
+
+import "buf/validate/validate.proto";
+import "common/v1/common.proto";
+
+option go_package = "gen/notify/v1;notifyv1";
+
+// NotificationRequest is sent from throttling via primind-tasks to notification-invoker
+message NotificationRequest {
+  repeated string tokens = 1 [(buf.validate.field).repeated.min_items = 1];
+  string task_id = 2 [(buf.validate.field).string.uuid = true];
+  common.v1.TaskType task_type = 3 [(buf.validate.field).enum = {in: [1, 2, 3, 4]}];
+}
+
+// TokenResult represents the result for a single FCM token
+message TokenResult {
+  string token = 1;
+  bool success = 2;
+  string message_id = 3;
+  string error = 4;
+}
+
+// NotificationResponse is the response from notification-invoker
+message NotificationResponse {
+  bool success = 1;
+  int32 total = 2;
+  int32 success_count = 3;
+  int32 failure_count = 4;
+  repeated TokenResult results = 5;
+}
+
+// ErrorResponse is the standard error response for notify service
+message ErrorResponse {
+  bool success = 1;
+  string error = 2;
+}
