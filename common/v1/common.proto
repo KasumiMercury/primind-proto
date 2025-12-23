@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "gen/common/v1;commonv1";
+
+// TaskType represents the type of task/reminder for prioritization
+enum TaskType {
+  TASK_TYPE_UNSPECIFIED = 0;
+  TASK_TYPE_URGENT = 1;
+  TASK_TYPE_SCHEDULED = 2;
+  TASK_TYPE_NORMAL = 3;
+  TASK_TYPE_LOW = 4;
+}
