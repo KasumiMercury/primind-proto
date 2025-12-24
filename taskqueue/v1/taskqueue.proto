@@ -35,6 +35,15 @@ message CreateTaskResponse {
   string create_time = 3;
 }
 
+// DeleteTaskRequest is sent to delete a queued task
+message DeleteTaskRequest {
+  // Task name/ID to delete (required)
+  string name = 1 [(buf.validate.field).required = true];
+}
+
+// DeleteTaskResponse is empty on success (matches Cloud Tasks)
+message DeleteTaskResponse {}
+
 // TaskPayload is the internal payload structure stored in the queue
 message TaskPayload {
   bytes body = 1;
