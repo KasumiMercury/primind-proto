@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package throttle.v1;
 
+import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "common/v1/common.proto";
 
@@ -31,4 +32,24 @@ message NotificationTask {
   string task_id = 2;
   common.v1.TaskType task_type = 3;
   google.protobuf.Timestamp schedule_at = 4;
+}
+
+// CancelRemindRequest is sent when a remind is cancelled
+message CancelRemindRequest {
+  string task_id = 1 [(buf.validate.field).string.uuid = true];
+  string user_id = 2 [(buf.validate.field).string.uuid = true];
+  int64 deleted_count = 3 [(buf.validate.field).int64.gte = 0];
+  google.protobuf.Timestamp cancelled_at = 4;
+}
+
+// CancelRemindResponse is returned after processing cancellation
+message CancelRemindResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ErrorResponse for error responses
+message ErrorResponse {
+  string error = 1;
+  string message = 2;
 }
