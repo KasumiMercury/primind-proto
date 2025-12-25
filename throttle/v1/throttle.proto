@@ -40,6 +40,8 @@ message CancelRemindRequest {
   string user_id = 2 [(buf.validate.field).string.uuid = true];
   int64 deleted_count = 3 [(buf.validate.field).int64.gte = 0];
   google.protobuf.Timestamp cancelled_at = 4;
+  // List of remind IDs that were deleted, used to cancel queued notifications
+  repeated string remind_ids = 5;
 }
 
 // CancelRemindResponse is returned after processing cancellation
