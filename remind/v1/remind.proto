@@ -40,6 +40,7 @@ message Remind {
   bool throttled = 7;
   google.protobuf.Timestamp created_at = 8;
   google.protobuf.Timestamp updated_at = 9;
+  int32 slide_window_width = 10; // slide window width in seconds for throttling (range: 60-1800)
 }
 
 // RemindsResponse is the response containing a list of reminds
