@@ -21,6 +21,7 @@ message CreateRemindRequest {
   repeated Device devices = 3 [(buf.validate.field).repeated.min_items = 1];
   string task_id = 4 [(buf.validate.field).string.uuid = true];
   common.v1.TaskType task_type = 5 [(buf.validate.field).enum = {in: [1, 2, 3, 4]}];
+  string color = 6;
 }
 
 // CancelRemindRequest is sent from central-backend via primind-tasks to time-mgmt
@@ -40,7 +41,11 @@ message Remind {
   bool throttled = 7;
   google.protobuf.Timestamp created_at = 8;
   google.protobuf.Timestamp updated_at = 9;
+<<<<<<< Updated upstream
   int32 slide_window_width = 10; // slide window width in seconds for throttling (range: 60-1800)
+=======
+  string color = 10;
+>>>>>>> Stashed changes
 }
 
 // RemindsResponse is the response containing a list of reminds
