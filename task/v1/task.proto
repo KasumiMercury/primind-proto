@@ -114,3 +114,39 @@ message DeleteTaskRequest {
 }
 
 message DeleteTaskResponse {}
+
+// User period settings service
+service UserPeriodSettingsService {
+  rpc GetUserPeriodSettings(GetUserPeriodSettingsRequest) returns (GetUserPeriodSettingsResponse);
+  rpc UpdateUserPeriodSettings(UpdateUserPeriodSettingsRequest) returns (UpdateUserPeriodSettingsResponse);
+}
+
+// Period setting for a specific task type
+message PeriodSetting {
+  TaskType task_type = 1 [(buf.validate.field).enum = {
+    in: [
+      1,
+      2,
+      3
+    ]
+  }]; // SHORT, NEAR, RELAXED only (not SCHEDULED)
+  int64 period_minutes = 2 [(buf.validate.field).int64 = {
+    gte: 1
+    lte: 10080
+  }]; // 1 minute to 7 days
+}
+
+message GetUserPeriodSettingsRequest {}
+
+message GetUserPeriodSettingsResponse {
+  repeated PeriodSetting settings = 1; // User's custom settings
+  repeated PeriodSetting defaults = 2; // Default values for reference
+}
+
+message UpdateUserPeriodSettingsRequest {
+  repeated PeriodSetting settings = 1;
+}
+
+message UpdateUserPeriodSettingsResponse {
+  repeated PeriodSetting settings = 1;
+}
